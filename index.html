@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Sorting Algorithm Visualizer</title>
+    <link rel="stylesheet" href="css.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔄 Advanced Sorting Algorithm Visualizer</h1>
+            <p class="subtitle">Learn sorting algorithms through interactive visualization with audio explanations</p>
+        </header>
+        
+        <!-- Algorithm Selection -->
+        <div class="algorithm-selection">
+            <h2>Choose Sorting Algorithm</h2>
+            <div class="algorithm-grid">
+                <div class="algorithm-card active" data-algorithm="bubble">
+                    <h3>Bubble Sort</h3>
+                    <div class="complexity">
+                        <span class="time">O(n²)</span>
+                        <span class="space">O(1)</span>
+                    </div>
+                    <p>Simple comparison-based algorithm that repeatedly swaps adjacent elements</p>
+                </div>
+                
+                <div class="algorithm-card" data-algorithm="selection">
+                    <h3>Selection Sort</h3>
+                    <div class="complexity">
+                        <span class="time">O(n²)</span>
+                        <span class="space">O(1)</span>
+                    </div>
+                    <p>Finds the minimum element and places it at the beginning</p>
+                </div>
+                
+                <div class="algorithm-card" data-algorithm="insertion">
+                    <h3>Insertion Sort</h3>
+                    <div class="complexity">
+                        <span class="time">O(n²)</span>
+                        <span class="space">O(1)</span>
+                    </div>
+                    <p>Builds the final sorted array one item at a time</p>
+                </div>
+                
+                <div class="algorithm-card" data-algorithm="merge">
+                    <h3>Merge Sort</h3>
+                    <div class="complexity">
+                        <span class="time">O(n log n)</span>
+                        <span class="space">O(n)</span>
+                    </div>
+                    <p>Divide-and-conquer algorithm that merges sorted subarrays</p>
+                </div>
+                
+                <div class="algorithm-card" data-algorithm="quick">
+                    <h3>Quick Sort</h3>
+                    <div class="complexity">
+                        <span class="time">O(n log n)</span>
+                        <span class="space">O(log n)</span>
+                    </div>
+                    <p>Partitions array around a pivot element</p>
+                </div>
+                
+                <div class="algorithm-card" data-algorithm="heap">
+                    <h3>Heap Sort</h3>
+                    <div class="complexity">
+                        <span class="time">O(n log n)</span>
+                        <span class="space">O(1)</span>
+                    </div>
+                    <p>Uses a binary heap data structure to sort elements</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Current Algorithm Info -->
+        <div class="current-algorithm-info" id="algorithmInfo">
+            <h3 id="currentAlgorithmTitle">Bubble Sort Algorithm</h3>
+            <p id="currentAlgorithmDescription">
+                Bubble Sort is a simple sorting algorithm that repeatedly steps through the list, 
+                compares adjacent elements and swaps them if they are in the wrong order.
+            </p>
+            <div class="algorithm-details">
+                <div class="detail-card">
+                    <strong>Time Complexity</strong><br>
+                    <span id="timeComplexity">Best: O(n) | Average: O(n²) | Worst: O(n²)</span>
+                </div>
+                <div class="detail-card">
+                    <strong>Space Complexity</strong><br>
+                    <span id="spaceComplexity">O(1) - In-place sorting</span>
+                </div>
+                <div class="detail-card">
+                    <strong>Stability</strong><br>
+                    <span id="stability">Stable - Equal elements maintain relative order</span>
+                </div>
+                <div class="detail-card">
+                    <strong>Best Use Case</strong><br>
+                    <span id="useCase">Small datasets or nearly sorted arrays</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input and Controls -->
+        <div class="input-section">
+            <div class="input-group">
+                <input type="text" id="arrayInput" 
+                       placeholder="Enter numbers separated by commas (e.g., 64, 34, 25, 12, 22, 11, 90)" 
+                       value="64, 34, 25, 12, 22, 11, 90">
+                <button class="btn-primary" id="generateBtn">Generate Array</button>
+                <button class="btn-info" id="randomBtn">Random Array</button>
+            </div>
+            
+            <div class="controls">
+                <button class="btn-secondary" id="sortBtn">Start Sorting</button>
+                <button class="btn-danger" id="pauseBtn" disabled>Pause</button>
+                <button class="btn-info" id="resetBtn">Reset</button>
+                <button class="btn-primary" id="stepBtn" disabled>Next Step</button>
+                
+                <div class="control-group">
+                    <label for="speedRange">Speed:</label>
+                    <input type="range" id="speedRange" min="1" max="10" value="5">
+                    <span id="speedValue">5</span>
+                </div>
+                
+                <div class="control-group">
+                    <label>
+                        <input type="checkbox" id="audioToggle" checked> 🔊 Audio
+                    </label>
+                    <button class="btn-info btn-small" id="testAudioBtn">Test</button>
+                </div>
+                
+                <div class="control-group">
+                    <label for="arraySizeRange">Array Size:</label>
+                    <input type="range" id="arraySizeRange" min="5" max="50" value="10">
+                    <span id="arraySizeValue">10</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Visualization Area -->
+        <div class="visualization-area">
+            <div class="array-container" id="arrayContainer">
+                <!-- Array elements will be generated here -->
+            </div>
+            
+            <!-- Additional visualization for merge/quick sort -->
+            <div class="tree-visualization" id="treeVisualization" style="display: none;">
+                <!-- Tree structure for divide-and-conquer algorithms -->
+            </div>
+        </div>
+
+        <!-- Explanation Panel -->
+        <div class="explanation-panel">
+            <div class="step-info" id="stepInfo">
+                <h3>Welcome to Advanced Sorting Visualizer!</h3>
+                <p>Choose a sorting algorithm above, enter your array values, and click "Start Sorting" to see the algorithm in action with detailed audio explanations.</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="comparisons">0</div>
+                    <div class="stat-label">Comparisons</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="swaps">0</div>
+                    <div class="stat-label">Swaps</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="arrayAccesses">0</div>
+                    <div class="stat-label">Array Accesses</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="passes">0</div>
+                    <div class="stat-label">Passes/Iterations</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="currentStep">0</div>
+                    <div class="stat-label">Current Step</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="timeTaken">0ms</div>
+                    <div class="stat-label">Time Taken</div>
+                </div>
+            </div>
+            
+            <!-- Code Display -->
+            <div class="code-section">
+                <h3>Algorithm Pseudocode</h3>
+                <pre id="pseudocode">
+// Bubble Sort Pseudocode
+for i = 0 to n-2
+    for j = 0 to n-2-i
+        if arr[j] > arr[j+1]
+            swap(arr[j], arr[j+1])
+                </pre>
+            </div>
+        </div>
+        
+        <!-- Performance Comparison -->
+        <div class="performance-section" id="performanceSection" style="display: none;">
+            <h3>Performance Comparison</h3>
+            <div class="comparison-table">
+                <table id="performanceTable">
+                    <thead>
+                        <tr>
+                            <th>Algorithm</th>
+                            <th>Time</th>
+                            <th>Comparisons</th>
+                            <th>Swaps</th>
+                            <th>Array Size</th>
+                        </tr>
+                    </thead>
+                    <tbody id="performanceTableBody">
+                    </tbody>
+                </table>
+            </div>
+            <button class="btn-info" id="compareAllBtn">Compare All Algorithms</button>
+        </div>
+    </div>
+
+    <script src="mjs.js"></script>
+    <script src="algorithm.js"> </script>
+</body>
+</html>
